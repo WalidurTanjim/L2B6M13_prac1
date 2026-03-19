@@ -7,4 +7,7 @@ const router = express.Router();
 // create user
 router.post("/", userControllers.createUser);
 
+// GET method
+router.get("/", userControllers.getUsers);
+
 export const userRoutes = router;

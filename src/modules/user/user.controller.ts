@@ -24,6 +24,32 @@ const createUser = async(req: Request, res: Response, next: NextFunction) => {
      }
 }
 
+// GET method
+// get all users
+const getUsers = async(req: Request, res: Response, next: NextFunction) => {
+     try{
+          const result = await userServices.getUsers();
+
+          if(result.length > 0){
+               res.status(200).json({
+                    success: true,
+                    message: "Users fetched successfully",
+                    data: result
+               });
+          }else{
+               res.status(404).json({
+                    success: false,
+                    message: "Users not found",
+                    data: null
+               });
+          }
+
+     }catch(err) {
+          next(err);
+     }
+}
+
 export const userControllers = {
      createUser,
+     getUsers,
 }

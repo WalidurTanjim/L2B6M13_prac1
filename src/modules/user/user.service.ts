@@ -28,6 +28,18 @@ const createUser = async(payload: Record<string, unknown>) => {
      }
 }
 
+// GET method
+// get all users
+const getUsers = async() => {
+     try{
+          const result = await pool.query(`SELECT * FROM users`);
+          return result.rows;
+     }catch(err: any) {
+          throw new AppError(err?.message || "Users not available", 500)
+     }
+}
+
 export const userServices = {
      createUser,
+     getUsers,
 }
