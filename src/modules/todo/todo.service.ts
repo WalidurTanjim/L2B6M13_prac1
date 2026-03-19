@@ -60,9 +60,33 @@ const deleteTodo = async(id: string) => {
      }
 }
 
+// PUT method
+const updateTodoById = async(id: string, payload: Record<string, unknown>) => {
+     const { user_id, title } = payload;
+
+     try{
+          const result = await pool.query(`UPDATE todos SET user_id=$1, title=$2 WHERE id=$3 RETURNING *`, [user_id, title, id]);
+
+          if(result.rowCount === 0) {
+               throw new AppError("Todo not found", 500);
+          }
+
+          return result.rows[0];
+     }catch(err: any) {
+          if(err.code === "23503") {
+               if(err.detail.includes("user_id")) {
+                    throw new AppError("User Id must be valid", 400);
+               }
+          }
+
+          throw new AppError(err?.message || "Something went wrong", 500);
+     }
+}
+
 export const todoService = {
      createTodo,
      getTodos,
      getTodoById,
      deleteTodo,
+     updateTodoById
 }

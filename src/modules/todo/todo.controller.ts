@@ -76,9 +76,32 @@ const deleteTodo = async(req: Request, res: Response, next: NextFunction) => {
      }
 }
 
+// PUT method
+const updateTodoById = async(req: Request, res: Response, next: NextFunction) => {
+     const { id } = req.params;
+     const { user_id, title } = req.body;
+
+     if(!id) throw new AppError("Id is required", 400);
+     if(!user_id) throw new AppError("User Id is required", 400);
+     if(!title) throw new AppError("Title is required", 400);
+
+     try{
+          const result = await todoService.updateTodoById(id as string, req.body);
+
+          res.status(200).json({
+               success: true,
+               message: "Todo updated successfully",
+               data: result
+          });
+     }catch(err) {
+          next(err);
+     }
+}
+
 export const todoController = {
      createTodo,
      getTodos,
      getTodoById,
      deleteTodo,
+     updateTodoById
 }

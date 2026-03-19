@@ -13,4 +13,7 @@ router.get("/:id", todoController.getTodoById);
 // DELETE method
 router.delete("/:id", todoController.deleteTodo);
 
+// PUT method
+router.put("/:id", todoController.updateTodoById);
+
 export const todoRouter = router;
