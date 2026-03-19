@@ -49,8 +49,22 @@ const getUserById = async(id: string) => {
      }
 }
 
+// DELETE method
+const deleteUserById = async(id: string) => {
+     try{
+          const result = await pool.query(`DELETE FROM users WHERE id=$1 RETURNING *`, [id]);
+
+          if(result.rowCount === 0){
+               return null;
+          }else return result.rows;
+     }catch(err: any) {
+          throw new AppError(err.message || "Something went wrong", 500);
+     }
+}
+
 export const userServices = {
      createUser,
      getUsers,
      getUserById,
+     deleteUserById,
 }

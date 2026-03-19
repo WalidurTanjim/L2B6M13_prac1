@@ -74,8 +74,28 @@ const getUserById = async(req: Request, res: Response, next: NextFunction) => {
      }
 }
 
+// DELETE method
+const deleteUserById = async(req: Request, res: Response, next: NextFunction) => {
+     const { id } = req.params;
+
+     try{
+          const result = await userServices.deleteUserById(id as string);
+
+          if(result === null) {
+               res.status(404).json({
+                    success: false,
+                    message: "User not found",
+                    data: result
+               });
+          }else res.status(204).send();
+     }catch(err) {
+          next(err);
+     }
+}
+
 export const userControllers = {
      createUser,
      getUsers,
      getUserById,
+     deleteUserById,
 }
