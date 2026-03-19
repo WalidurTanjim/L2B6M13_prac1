@@ -1,17 +1,22 @@
 import { NextFunction, Request, Response } from "express";
 import AppError from "../utils/AppError";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../config";
 
 const auth = () => {
-     return (req: Request, res: Response, next: NextFunction) => {
-          const token = req.headers.authorization;
-          if(!token) throw new AppError("You are not allowed", 401);
+     return async(req: Request, res: Response, next: NextFunction) => {
+          try{
+               const token = req.headers.authorization;
+               if(!token) throw new AppError("You are not allowed", 401);
 
-          const secret = config.AUTH_SECRET;
-          const decoded = jwt.verify(token, secret as string);
+               const secret = config.AUTH_SECRET;
+               const decoded = jwt.verify(token, secret as string) as JwtPayload;
+               req.user = decoded;
 
-          next();
+               next();
+          }catch(err) {
+               next(err);
+          }
      }
 };
 
