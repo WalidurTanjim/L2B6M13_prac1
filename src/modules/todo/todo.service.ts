@@ -45,8 +45,24 @@ const getTodoById = async(id: string) => {
      }
 }
 
+// DELETE method
+const deleteTodo = async(id: string) => {
+     try{
+          const result = await pool.query(`DELETE FROM todos WHERE id=$1 RETURNING *`, [id]);
+
+          if(result.rowCount === 0) {
+               throw new AppError("Todo not found", 404);
+          }
+
+          return result.rows[0];
+     }catch(err: any) {
+          throw new AppError(err?.message || "Something went wrong", 500);
+     }
+}
+
 export const todoService = {
      createTodo,
      getTodos,
      getTodoById,
+     deleteTodo,
 }

@@ -61,8 +61,24 @@ const getTodoById = async(req: Request, res: Response, next: NextFunction) => {
      }
 }
 
+// DELETE method
+const deleteTodo = async(req: Request, res: Response, next: NextFunction) => {
+     const { id } = req.params;
+
+     if(!id) throw new AppError("Id is required", 400);
+
+     try{
+          await todoService.deleteTodo(id as string);
+
+          res.status(204).send();
+     }catch(err) {
+          next(err);
+     }
+}
+
 export const todoController = {
      createTodo,
      getTodos,
      getTodoById,
+     deleteTodo,
 }

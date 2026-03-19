@@ -10,4 +10,7 @@ router.post("/", todoController.createTodo);
 router.get("/", todoController.getTodos);
 router.get("/:id", todoController.getTodoById);
 
+// DELETE method
+router.delete("/:id", todoController.deleteTodo);
+
 export const todoRouter = router;
