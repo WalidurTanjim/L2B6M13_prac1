@@ -93,9 +93,35 @@ const deleteUserById = async(req: Request, res: Response, next: NextFunction) =>
      }
 }
 
+// PUT method
+const updateUserById = async(req: Request, res: Response, next: NextFunction) => {
+     const { id } = req.params;
+
+     try{
+          const result = await userServices.updateUserById(id as string, req.body);
+
+          if(result === null) {
+               res.status(404).json({
+                    success: false, 
+                    message: "User not found",
+                    data: result
+               });
+          }else{
+               res.status(201).json({
+                    success: true,
+                    message: "User updated successfully",
+                    data: result
+               })
+          }
+     }catch(err) {
+          next(err);
+     }
+}
+
 export const userControllers = {
      createUser,
      getUsers,
      getUserById,
      deleteUserById,
+     updateUserById
 }

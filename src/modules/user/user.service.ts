@@ -62,9 +62,34 @@ const deleteUserById = async(id: string) => {
      }
 }
 
+// PUT method
+const updateUserById = async(id: string, payload: Record<string, unknown>) => {
+     const { name, email } = payload;
+
+     if(!name) throw new AppError("Name is required", 500);
+     if(!email) throw new AppError("Email is required", 500);
+
+     try{
+          const result = await pool.query(`UPDATE users SET name=$1, email=$2 WHERE id=$3 RETURNING *`, [name, email, id]);
+          
+          if(result.rowCount === 0) {
+               return null;
+          }else return result.rows[0]
+     }catch(err: any) {
+          if(err.code === "23505") {
+               if(err.detail.includes("email")) {
+                    throw new AppError("Email already exists. Try another", 409);
+               }
+          }
+
+          throw new AppError(err?.message || "Something went wrong", 500);
+     }
+}
+
 export const userServices = {
      createUser,
      getUsers,
      getUserById,
      deleteUserById,
+     updateUserById
 }

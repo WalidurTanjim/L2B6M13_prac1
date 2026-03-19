@@ -15,4 +15,7 @@ router.get("/:id", userControllers.getUserById);
 // DELETE method
 router.delete("/:id", userControllers.deleteUserById);
 
+// PUT method
+router.put("/:id", userControllers.updateUserById);
+
 export const userRoutes = router;
