@@ -18,6 +18,12 @@ const createUser = async(payload: Record<string, unknown>) => {
           const result = await pool.query(`INSERT INTO users(name, role, email, password) VALUES($1, $2, $3, $4) RETURNING *`, [name, role, email, hashedPassword]);
           return result.rows[0];
      }catch(err: any) {
+          if(err?.code === "23505") {
+               if(err?.detail.includes("email")) {
+                    throw new AppError("Email already exists", 409);
+               }
+          }
+
           throw new AppError(err?.message || "Database error", 500);
      }
 }
