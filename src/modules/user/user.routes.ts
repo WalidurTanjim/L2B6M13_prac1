@@ -1,6 +1,6 @@
 import express from "express";
 import { userControllers } from "./user.controller";
-import { METHODS } from "http";
+import auth from "../../middlewares/auth";
 
 const router = express.Router();
 
@@ -9,7 +9,7 @@ const router = express.Router();
 router.post("/", userControllers.createUser);
 
 // GET method
-router.get("/", userControllers.getUsers);
+router.get("/", auth(), userControllers.getUsers);
 router.get("/:id", userControllers.getUserById);
 
 // DELETE method

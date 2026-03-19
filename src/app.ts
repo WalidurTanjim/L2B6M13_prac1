@@ -22,9 +22,6 @@ app.use("/todos", todoRouter);
 // auth 
 app.use("/auth", authRoutes);
 
-// middleware
-app.use(globalErrorHandler);
-
 // 404 not found route
 app.use((req: Request, res: Response) => {
   res.status(404).json({
@@ -33,5 +30,8 @@ app.use((req: Request, res: Response) => {
     data: req?.path
   });
 });
+
+// middleware
+app.use(globalErrorHandler);
 
 export default app;

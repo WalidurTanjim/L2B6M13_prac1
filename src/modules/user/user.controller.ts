@@ -5,13 +5,13 @@ import AppError from "../../utils/AppError";
 // POST method
 // create user
 const createUser = async(req: Request, res: Response, next: NextFunction) => {
-     try{
-          const { name, role, email, password } = req.body;
-     
-          if(!name || !role || !email || !password) {
-               return next(new AppError("All fields are required", 400));
-          }
+     const { name, role, email, password } = req.body;
 
+     if(!name || !role || !email || !password) {
+          return next(new AppError("All fields are required", 400));
+     }
+     
+     try{
           const result = await userServices.createUser(req.body);
 
           res.status(201).json({
