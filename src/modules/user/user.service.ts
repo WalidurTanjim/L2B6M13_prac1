@@ -39,7 +39,18 @@ const getUsers = async() => {
      }
 }
 
+// get single user by id
+const getUserById = async(id: string) => {
+     try{
+          const result = await pool.query(`SELECT * FROM users WHERE id=$1`, [id]);
+          return result.rows[0]
+     }catch(err: any) {
+          throw new AppError(err.message || "Something went wrong", 500);
+     }
+}
+
 export const userServices = {
      createUser,
      getUsers,
+     getUserById,
 }

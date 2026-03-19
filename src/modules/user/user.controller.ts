@@ -49,7 +49,33 @@ const getUsers = async(req: Request, res: Response, next: NextFunction) => {
      }
 }
 
+// get single user by id
+const getUserById = async(req: Request, res: Response, next: NextFunction) => {
+     const { id } = req.params;
+
+     try{
+          const result = await userServices.getUserById(id as string);
+
+          if(result === undefined) {
+               res.status(404).json({
+                    success: false,
+                    message: "User not found",
+                    data: null
+               });
+          }else{
+               res.status(200).json({
+                    success: true,
+                    message: "User fetched successfully",
+                    data: result
+               });
+          }
+     }catch(err) {
+          next(err);
+     }
+}
+
 export const userControllers = {
      createUser,
      getUsers,
+     getUserById,
 }
