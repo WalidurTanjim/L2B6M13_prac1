@@ -16,6 +16,30 @@ const createTodo = async(req: Request, res: Response, next: NextFunction) => {
      }
 }
 
+// GET method
+const getTodos = async(req: Request, res: Response, next: NextFunction) => {
+     try{
+          const result = await todoService.getTodos();
+          
+          if(result.length > 0) {
+               res.status(200).json({
+                    success: true,
+                    message: "Todos fetched successfully",
+                    data: result
+               });
+          }else{
+               res.status(404).json({
+                    success: false,
+                    message: "Todos not found",
+                    data: null
+               });
+          }
+     }catch(err) {
+          return next(err);
+     }
+}
+
 export const todoController = {
      createTodo,
+     getTodos,
 }
